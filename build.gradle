@@ -1,0 +1,84 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.2.30'
+        java3dVersion = '1.5.1'
+    }
+
+    group = 'com.real_currents.svelte'
+    version = '0.1'
+
+//    compileKotlin {
+//        kotlinOptions {
+//            jvmTarget = "1.8"
+//        }
+//    }
+//    compileTestKotlin {
+//        kotlinOptions {
+//            jvmTarget = "1.8"
+//        }
+//    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+//    tasks.withType(JavaCompile) {
+//        options.encoding = 'UTF-8'
+//    }
+
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+        maven { url("https://oss.sonatype.org/content/repositories/snapshots/") }
+        maven { url("https://plugins.gradle.org/m2/") }
+        maven { url("https://repo.spring.io/libs-snapshot") }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+    }
+}
+
+project(":SvelteNativeApp") {
+    apply plugin: 'com.android.application'
+    apply plugin: 'kotlin-android'
+    apply plugin: 'kotlin-android-extensions'
+
+    android {
+        compileSdkVersion 28
+        buildToolsVersion "30.0.0"
+
+        defaultConfig {
+            applicationId "com.real_currents.SvelteNativeApp"
+            minSdkVersion 19
+            //noinspection OldTargetApi
+            targetSdkVersion 28
+            versionCode 1
+            versionName "1.0"
+
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            }
+        }
+
+        def computeKotlinVersion = { -> project.hasProperty("kotlinVersion") ? kotlinVersion : "1.3.41" }
+        def kotlinVersion = computeKotlinVersion()
+
+        dependencies {
+            implementation fileTree(dir: "libs", include: ["*.jar"])
+            implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+            implementation 'com.android.support:appcompat-v7:28.0.0'
+            testImplementation 'junit:junit:4.12'
+            androidTestImplementation 'com.android.support.test:runner:1.0.2'
+            androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+        }
+    }
+}
