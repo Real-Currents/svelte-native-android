@@ -32,6 +32,7 @@
   },
   "scripts": {
     "build": "tns build android",
+    "postinstall": "npm run build",
     "start": "tns run android"
   }
 }
