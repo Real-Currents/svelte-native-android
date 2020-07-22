@@ -1,0 +1,2 @@
+include ':SvelteNativeApp'
+project(':SvelteNativeApp').projectDir = new File(rootDir, 'platforms/android/')
